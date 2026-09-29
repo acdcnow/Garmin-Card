@@ -1,5 +1,6 @@
 {
   "name": "Garmin Card",
+  "filename": "garmin-card.js",
   "render_readme": true,
   "homeassistant": "2026.9.0"
 }
