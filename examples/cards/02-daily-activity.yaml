@@ -10,10 +10,10 @@ entities:
     max_entity: sensor.garmin_connect_daily_step_goal
     color: deepskyblue
 
-  # Distance is reported in meters.
+  # Distance is in meters, so `max` is in meters too (10 km). Home Assistant
+  # converts the displayed value to kilometres for you.
   - entity: sensor.garmin_connect_distance
     name: Distance
-    units: km
     max: 10000
 
   - entity: sensor.garmin_connect_calories

@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Garmin Card preview</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      /*
+       * Preview harness for Garmin Card.
+       *
+       * Renders every example in ../../examples with the real card code and a
+       * fake `hass` object (see cards.js), so screenshots can be taken without
+       * a Home Assistant instance.
+       *
+       * Open this file in a browser, or regenerate the PNGs with Playwright:
+       *   node scripts/make-previews.js
+       */
+
+      :root {
+        --card-width: 460px;
+        --dashboard-card-width: 400px;
+
+        /* Home Assistant default light theme */
+        --primary-background-color: #eef1f5;
+        --card-background-color: #ffffff;
+        --primary-text-color: #212121;
+        --secondary-text-color: #727272;
+        --disabled-text-color: #bdbdbd;
+        --primary-color: #03a9f4;
+        --accent-color: #ff9800;
+        --state-icon-color: #44739e;
+        --divider-color: #e0e0e0;
+        --success-color: #4caf50;
+        --warning-color: #ff9800;
+        --error-color: #f44336;
+        --ha-card-border-radius: 12px;
+        --ha-card-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+        --ha-font-size-s: 0.75rem;
+        --ha-font-size-m: 0.875rem;
+        --ha-font-size-l: 1rem;
+        --mdc-icon-size: 24px;
+      }
+
+      .dark {
+        /* Home Assistant default dark theme */
+        --primary-background-color: #111111;
+        --card-background-color: #1c1c1c;
+        --primary-text-color: #e1e1e1;
+        --secondary-text-color: #9b9b9b;
+        --disabled-text-color: #6f6f6f;
+        --primary-color: #03a9f4;
+        --state-icon-color: #44739e;
+        --divider-color: #383838;
+        --ha-card-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 24px;
+        background: var(--primary-background-color);
+        color: var(--primary-text-color);
+        font-family: system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      }
+
+      h1,
+      h2 {
+        font-weight: 500;
+      }
+
+      h1 {
+        font-size: 1.4rem;
+      }
+
+      h2 {
+        font-size: 1rem;
+        margin: 28px 0 12px;
+      }
+
+      /* one screenshot per example card */
+      .shots {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        align-items: flex-start;
+      }
+
+      .shot {
+        width: var(--card-width);
+      }
+
+      /* sections dashboard */
+      .dashboard {
+        padding: 16px;
+        background: var(--primary-background-color);
+      }
+
+      .dashboard .sections {
+        display: grid;
+        grid-template-columns: repeat(var(--columns, 4), minmax(0, 1fr));
+        gap: 16px;
+        align-items: start;
+      }
+
+      .dashboard .section {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .dashboard .section > * {
+        width: 100%;
+      }
+
+      .dashboard .heading {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        padding: 4px 2px;
+      }
+
+      .dashboard .masonry {
+        column-count: 3;
+        column-gap: 16px;
+      }
+
+      .dashboard .masonry > * {
+        break-inside: avoid;
+        margin-bottom: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Garmin Card preview</h1>
+
+    <h2>Example cards</h2>
+    <div class="shots" id="cards"></div>
+
+    <h2>Designs</h2>
+    <div class="shots" id="designs"></div>
+
+    <h2>Dashboards</h2>
+    <div id="dashboards"></div>
+
+    <h2>Dark theme</h2>
+    <div class="shots dark" id="dark"></div>
+
+    <script src="icons.js"></script>
+
+    <script>
+      /* --- ha-card stub: the card surface Home Assistant provides ---------- */
+      class HaCardStub extends HTMLElement {
+        constructor() {
+          super();
+          this.attachShadow({ mode: "open" });
+          this.shadowRoot.innerHTML = `
+            <style>
+              :host {
+                display: block;
+                height: 100%;
+                overflow: hidden;
+                background: var(--ha-card-background, var(--card-background-color, #fff));
+                border-radius: var(--ha-card-border-radius, 12px);
+                box-shadow: var(--ha-card-box-shadow, 0 2px 6px rgba(0, 0, 0, 0.12));
+              }
+            </style>
+            <slot></slot>`;
+        }
+      }
+      customElements.define("ha-card", HaCardStub);
+
+      /* --- ha-icon stub: renders the MDI subset --------------------------- */
+      class HaIconStub extends HTMLElement {
+        static get observedAttributes() {
+          return ["icon"];
+        }
+        constructor() {
+          super();
+          this.attachShadow({ mode: "open" });
+        }
+        connectedCallback() {
+          this._render();
+        }
+        attributeChangedCallback() {
+          this._render();
+        }
+        _render() {
+          const name = (this.getAttribute("icon") || "").split(":")[1] || "";
+          const path = (window.MDI_SUBSET || {})[name];
+          const body = path
+            ? `<path d="${path}"/>`
+            : `<circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-dasharray="3 3"/>`;
+          this.shadowRoot.innerHTML = `<style>
+              :host {
+                display: inline-flex;
+                flex: none;
+                width: var(--mdc-icon-size, 24px);
+                height: var(--mdc-icon-size, 24px);
+              }
+              svg { width: 100%; height: 100%; fill: currentColor; }
+            </style><svg viewBox="0 0 24 24">${body}</svg>`;
+        }
+      }
+      customElements.define("ha-icon", HaIconStub);
+    </script>
+
+    <script src="cards.js"></script>
+    <script src="../../dist/garmin-card.js"></script>
+
+    <script>
+      /* --- fake hass ------------------------------------------------------ */
+      const states = window.PREVIEW_STATES;
+
+      const numberFormat = new Intl.NumberFormat("en", { maximumFractionDigits: 2 });
+      const timeFormat = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit" });
+
+      /*
+       * Mimics hass.formatEntityStateToParts() / …AttributeValueToParts():
+       *  - timestamp device classes are rendered as a time
+       *  - numeric values are formatted with the user's number format
+       *  - a distance in meters is converted to kilometres (metric unit system)
+       *  - attributes of an entity have no unit of their own
+       */
+      const partsFor = (stateObj, attribute) => {
+        const raw = attribute !== undefined ? stateObj.attributes[attribute] : stateObj.state;
+        if (raw === undefined || raw === null) return [{ type: "value", value: "" }];
+
+        const deviceClass = stateObj.attributes.device_class;
+
+        if (typeof raw === "string" && deviceClass === "timestamp") {
+          const date = new Date(raw);
+          if (!Number.isNaN(date.getTime())) {
+            return [{ type: "value", value: timeFormat.format(date) }];
+          }
+        }
+
+        const numeric =
+          typeof raw === "number"
+            ? raw
+            : typeof raw === "string" && raw.trim() !== "" && Number.isFinite(Number(raw))
+              ? Number(raw)
+              : undefined;
+
+        const numericEntity =
+          attribute !== undefined ||
+          Boolean(stateObj.attributes.unit_of_measurement || stateObj.attributes.state_class);
+
+        if (numeric !== undefined && numericEntity) {
+          let value = numeric;
+          let unit =
+            attribute === undefined ? stateObj.attributes.unit_of_measurement : undefined;
+
+          if (attribute === undefined && deviceClass === "distance" && unit === "m") {
+            value = numeric / 1000;
+            unit = "km";
+          }
+
+          const formatted = numberFormat.format(value);
+          return unit
+            ? [
+                { type: "value", value: formatted },
+                { type: "literal", value: " " },
+                { type: "unit", value: unit },
+              ]
+            : [{ type: "value", value: formatted }];
+        }
+
+        return [{ type: "value", value: String(raw) }];
+      };
+
+      const hass = {
+        states,
+        language: "en",
+        locale: { number_format: "comma_decimal", time_format: "24", language: "en" },
+        config: { unit_system: { length: "km" } },
+        devices: {},
+        entities: {},
+        localize: (key) => (key === "state.default.unavailable" ? "unavailable" : ""),
+        callService: () => {},
+        formatEntityStateToParts: (stateObj) => partsFor(stateObj),
+        formatEntityAttributeValueToParts: (stateObj, attribute) => partsFor(stateObj, attribute),
+        formatEntityState: (stateObj) =>
+          partsFor(stateObj).map((part) => part.value).join("").trim(),
+        formatEntityAttributeValue: (stateObj, attribute) =>
+          partsFor(stateObj, attribute).map((part) => part.value).join("").trim(),
+      };
+
+      /* --- rendering ------------------------------------------------------ */
+      const renderCard = (config) => {
+        const card = document.createElement("garmin-card");
+        card.setConfig(config);
+        card.hass = hass;
+        return card;
+      };
+
+      const addShot = (container, id, config) => {
+        const shot = document.createElement("div");
+        shot.className = "shot";
+        shot.id = `shot-${id}`;
+        shot.appendChild(renderCard(config));
+        container.appendChild(shot);
+      };
+
+      const fill = (selector, filter) => {
+        const container = document.querySelector(selector);
+        window.PREVIEW_CARDS.filter(filter).forEach((card) => addShot(container, card.id, card.config));
+      };
+
+      fill("#cards", (card) => card.source.startsWith("examples/cards"));
+      fill("#designs", (card) => card.source.startsWith("examples/designs"));
+
+      /* dashboards */
+      window.PREVIEW_DASHBOARDS.forEach((dashboard) => {
+        const view = dashboard.views[0];
+        const wrapper = document.createElement("div");
+        wrapper.className = "dashboard";
+        wrapper.id = `shot-${dashboard.id}`;
+
+        if (view.type === "sections") {
+          const sections = document.createElement("div");
+          sections.className = "sections";
+          sections.style.setProperty("--columns", String(view.max_columns || 4));
+          (view.sections || []).forEach((section) => {
+            const column = document.createElement("div");
+            column.className = "section";
+            (section.cards || []).forEach((definition) => {
+              if (definition.type === "heading") {
+                const heading = document.createElement("div");
+                heading.className = "heading";
+                heading.innerHTML = `<ha-icon icon="${definition.icon || "mdi:table"}"></ha-icon>` +
+                  `<span>${definition.heading || ""}</span>`;
+                column.appendChild(heading);
+                return;
+              }
+              if (definition.type === "custom:garmin-card") {
+                const config = { ...definition };
+                delete config.type;
+                column.appendChild(renderCard(config));
+              }
+            });
+            sections.appendChild(column);
+          });
+          wrapper.appendChild(sections);
+        } else {
+          const masonry = document.createElement("div");
+          masonry.className = "masonry";
+          (view.cards || []).forEach((definition) => {
+            if (definition.type !== "custom:garmin-card") return;
+            const config = { ...definition };
+            delete config.type;
+            masonry.appendChild(renderCard(config));
+          });
+          wrapper.appendChild(masonry);
+        }
+
+        document.querySelector("#dashboards").appendChild(wrapper);
+      });
+
+      /* one dark theme example */
+      const everything = window.PREVIEW_CARDS.find((card) => card.id === "everything");
+      if (everything) addShot(document.querySelector("#dark"), "everything-dark", everything.config);
+
+      document.title = "preview ready";
+      document.body.setAttribute("data-ready", "true");
+    </script>
+  </body>
+</html>

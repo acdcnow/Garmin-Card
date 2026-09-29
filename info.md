@@ -53,8 +53,8 @@ entities:
   - entity: sensor.garmin_connect_last_activity
     attribute: distance
     name: Last run
-    units: km
-    max: 10
+    units: m
+    max: 10000
     show_units: true
 ```
 

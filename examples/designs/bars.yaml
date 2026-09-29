@@ -15,8 +15,7 @@ entities:
     color: deepskyblue
   - entity: sensor.garmin_connect_distance
     name: Distance
-    units: km
-    max: 10000
+    max: 10000          # meters
     color: '#00b294'
   - entity: sensor.garmin_connect_calories
     name: Calories

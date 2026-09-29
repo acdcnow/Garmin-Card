@@ -21,9 +21,12 @@
   "license": "MIT",
   "main": "dist/garmin-card.js",
   "scripts": {
-    "test": "node test/smoke.test.js"
+    "test": "node test/smoke.test.js",
+    "preview:data": "node scripts/build-preview-data.js && node scripts/build-preview-icons.js"
   },
   "devDependencies": {
+    "@mdi/js": "^7.4.47",
+    "js-yaml": "^5.4.2",
     "jsdom": "^30.0.0"
   }
 }

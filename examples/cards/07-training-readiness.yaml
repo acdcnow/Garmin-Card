@@ -30,7 +30,6 @@ entities:
   # Recovery time is in minutes; a full day is a sensible maximum.
   - entity: sensor.garmin_connect_recovery_time
     name: Recovery
-    units: h
     max: 1440
     color: '#8d6e63'
 

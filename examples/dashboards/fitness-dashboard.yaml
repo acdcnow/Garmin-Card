@@ -37,7 +37,6 @@ views:
                 color: deepskyblue
               - entity: sensor.garmin_connect_distance
                 name: Distance
-                units: km
                 max: 10000
                 color: '#00b294'
               - entity: sensor.garmin_connect_calories
@@ -129,7 +128,6 @@ views:
                 color: '#8e24aa'
               - entity: sensor.garmin_connect_recovery_time
                 name: Recovery
-                units: h
                 max: 1440
                 color: '#8d6e63'
 
@@ -172,31 +170,28 @@ views:
 
           - type: custom:garmin-card
             title: Last activity
-            header: false
             layout: bars
-            entities:
+            header_entities:
               - entity: sensor.garmin_connect_last_activity
                 name: Activity
-                max: 1
-                color: '#e91e63'
+                icon: mdi:run-fast
+              - entity: sensor.garmin_connect_next_scheduled_workout
+                name: Next
+            entities:
               - entity: sensor.garmin_connect_last_activity
                 attribute: distance
                 name: Distance
-                units: km
+                units: m
                 max: 10000
                 show_units: true
                 color: '#9c27b0'
               - entity: sensor.garmin_connect_last_activity
                 attribute: duration
                 name: Duration
-                units: min
-                max: 3600
+                units: s
+                max: 7200
                 show_units: true
                 color: '#5c6bc0'
-              - entity: sensor.garmin_connect_next_scheduled_workout
-                name: Next workout
-                max: 1
-                color: '#7cb342'
 
       # ------------------------------------------------------------- body
       - type: grid

@@ -11,29 +11,31 @@ header_entities:
     name: Last run
     icon: mdi:run-fast
 entities:
+  # Attributes have no unit of their own, so provide one with `units`.
   - entity: sensor.garmin_connect_last_activity
     attribute: distance
     name: Distance
-    units: km
-    max: 10000          # meters
+    units: m
+    max: 10000
     show_units: true
     color: '#e91e63'
 
   - entity: sensor.garmin_connect_last_activity
     attribute: duration
     name: Duration
-    units: min
-    max: 3600           # seconds
+    units: s
+    max: 7200
     show_units: true
     color: '#9c27b0'
 
   # Actions: tap opens the more-info dialog (default), hold opens Garmin
   # Connect in a new tab, double tap navigates to another dashboard view.
   - entity: sensor.garmin_connect_last_activity
-    attribute: duration
-    name: Duration (with actions)
-    units: min
-    max: 3600
+    attribute: calories
+    name: Energy
+    units: kcal
+    max: 800
+    show_units: true
     tap_action:
       action: more-info
     hold_action:

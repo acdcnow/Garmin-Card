@@ -24,7 +24,6 @@ views:
             color: deepskyblue
           - entity: sensor.garmin_connect_distance
             name: Distance
-            units: km
             max: 10000
             color: '#00b294'
           - entity: sensor.garmin_connect_intensity_minutes
@@ -66,7 +65,6 @@ views:
             color: '#8e24aa'
           - entity: sensor.garmin_connect_recovery_time
             name: Recovery time
-            units: h
             max: 1440
             color: '#8d6e63'
           - entity: sensor.garmin_connect_vo2_max

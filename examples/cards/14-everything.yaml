@@ -36,11 +36,11 @@ entities:
       50: '#ffb300'
       80: '#43a047'
 
-  # attribute value with a unit override
+  # an attribute value; the attribute carries no unit, so it is provided here
   - entity: sensor.garmin_connect_last_activity
     attribute: distance
     name: Last run
-    units: km
+    units: m
     max: 10000
     color: '#e91e63'
 
@@ -77,10 +77,10 @@ entities:
       action: navigate
       navigation_path: /lovelace/fitness
 
-  # last activity duration, in minutes
+  # last activity duration (the attribute is in seconds)
   - entity: sensor.garmin_connect_last_activity
     attribute: duration
     name: Duration
-    units: min
-    max: 3600
+    units: s
+    max: 7200
     color: '#9c27b0'

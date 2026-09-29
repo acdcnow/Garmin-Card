@@ -33,8 +33,11 @@ Home Assistant 2026.9.
   [layout designs](examples/designs),
   [a full dashboard](examples/dashboards) and an
   [entity reference](examples/garmin-entities.md).
-- `hacs.json`, a HACS validation workflow and a jsdom based smoke test
-  (`npm test`).
+- Screenshots of every example and both dashboards in the README. They are rendered from
+  the example YAML by the card itself (`docs/preview`), so they cannot drift away from the
+  code that is actually shipped.
+- `hacs.json`, a HACS validation workflow, a smoke test (`npm test`) and
+  `npm run preview:data` to regenerate the README previews.
 
 ### Changed
 

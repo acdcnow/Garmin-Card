@@ -10,10 +10,10 @@ A fitness card for the Home Assistant Lovelace dashboard. It visualises the enti
 created by the [Garmin Connect integration](https://github.com/cyberjunky/home-assistant-garmin_connect)
 as animated progress rings (or bars) with optional goals, units and actions.
 
-![Garmin Card layout](https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/garmin-card-layout.svg)
+<img src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/everything.png" alt="Garmin Card with eight rings: steps, intensity minutes, last run, sleep score, hydration, training readiness, floors and duration">
 
-> The image above is a layout schematic. See the [examples](examples/) for ready to paste
-> card configurations and a complete dashboard.
+> Every screenshot in this readme is rendered from the YAML in [`examples/`](examples) by the
+> card itself, using [sample Garmin data](docs/preview) and a metric unit system.
 
 ---
 
@@ -28,7 +28,7 @@ as animated progress rings (or bars) with optional goals, units and actions.
 - [Actions](#actions)
 - [Layouts](#layouts)
 - [Battery indicator](#battery-indicator)
-- [Examples](#examples)
+- [Examples and previews](#examples-and-previews)
 - [Dashboards and section sizing](#dashboards-and-section-sizing)
 - [Migrating from fitbit-card](#migrating-from-fitbit-card)
 - [Troubleshooting](#troubleshooting)
@@ -220,13 +220,14 @@ entities:
   - entity: sensor.garmin_connect_last_activity
     attribute: distance
     name: Distance
-    units: km
-    max: 10000
+    units: m           # attributes have no unit of their own
+    max: 10000         # meters
   - entity: sensor.garmin_connect_last_activity
     attribute: duration
     name: Duration
     units: s
     max: 7200
+    show_units: true
 ```
 
 > Attribute values are formatted by Home Assistant as well, so an attribute holding a
@@ -257,16 +258,30 @@ color names or hex values such as `'#14308D'`.
 
 ### Unit handling
 
-Units come from the entity's `unit_of_measurement`. Use `units` to override the shown
-unit (it does not convert the value) and `show_units` to toggle the unit per entity:
+Units come from the entity's `unit_of_measurement`. For an attribute, which has no unit of
+its own, provide one with `units`. `show_units` toggles the unit per entity:
 
 ```yaml
 show_units: false           # card default
 entities:
-  - entity: sensor.garmin_connect_steps
-    units: k                # shown as "8,432 k"
-    show_units: true
+  - entity: sensor.garmin_connect_last_activity
+    attribute: duration
+    name: Duration
+    units: s                # the attribute carries no unit
+    max: 7200
+    show_units: true        # "2,410 s"
 ```
+
+> **`units` is a label, it does not convert the value.** A value of `6420` (meters)
+> labelled `km` reads "6,420 km". Home Assistant converts the value for you when the entity
+> has a unit and a device class, so pick the display unit in **Settings → Devices &
+> services → Entities → ⚙ → Unit of measurement** and the card follows it. For plain
+> attributes, use a template sensor if you need the value in another unit.
+>
+> **`max` is always compared against the raw state**, and Home Assistant keeps the state in
+> the entity's base unit. `sensor.garmin_connect_distance` is in meters, so a 10 km goal is
+> `max: 10000` even when the card displays "6.42 km". The same applies to `max_entity`
+> (`sensor.garmin_connect_daily_step_goal` is in steps, `…hydration_goal` in millilitres).
 
 ---
 
@@ -313,6 +328,10 @@ type: custom:garmin-card
 layout: bars
 ```
 
+The anatomy of both layouts:
+
+![Garmin Card layout schematic](https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/garmin-card-layout.svg)
+
 More layout recipes: [examples/designs](examples/designs).
 
 ---
@@ -334,16 +353,47 @@ battery_colors:
 
 ---
 
-## Examples
+## Examples and previews
 
-Ready to paste configurations, all based on real Garmin Connect entities:
+Every image below is rendered from the YAML files in this repository by the card itself,
+using [sample Garmin data and a metric unit system](docs/preview). Ready to paste:
 
-| Example | What it shows |
-| ------- | ------------- |
+| Folder | What it shows |
+| ------ | ------------- |
 | [examples/cards](examples/cards) | One card per fitness topic: activity, sleep, heart rate, training readiness, body composition, hydration, nutrition, gear… |
 | [examples/designs](examples/designs) | Layout and styling recipes: dense rings, bars, header only, themes. |
-| [examples/dashboards](examples/dashboards) | A complete sections dashboard with all the cards together. |
+| [examples/dashboards](examples/dashboards) | Two complete dashboards, a sections view and a masonry view. |
 | [examples/garmin-entities.md](examples/garmin-entities.md) | Every Garmin Connect entity with its default entity id and what it is good for. |
+
+### Dashboards
+
+[`fitness-dashboard.yaml`](examples/dashboards/fitness-dashboard.yaml) — the modern
+**sections** view, four sections with headings:
+
+<img src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/fitness-dashboard.png" alt="Sections dashboard with Today, Sleep, Training and Body sections">
+
+[`masonry-dashboard.yaml`](examples/dashboards/masonry-dashboard.yaml) — the classic
+**masonry** layout for a wall tablet:
+
+<img src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/masonry-dashboard.png" alt="Masonry dashboard with activity, sleep, training and hydration cards">
+
+### Example cards
+
+| | | |
+| --- | --- | --- |
+| <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/minimal.png" alt="Minimal card"><br>[01 · Minimal](examples/cards/01-minimal.yaml) | <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/daily-activity.png" alt="Daily activity card"><br>[02 · Daily activity](examples/cards/02-daily-activity.yaml) | <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/steps-and-goals.png" alt="Steps and goals card"><br>[03 · Steps and goals](examples/cards/03-steps-and-goals.yaml) |
+| <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/sleep.png" alt="Sleep card"><br>[04 · Sleep](examples/cards/04-sleep.yaml) | <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/heart-hrv-spo2.png" alt="Heart rate, HRV and SpO2 card"><br>[05 · Heart, HRV, SpO2](examples/cards/05-heart-hrv-spo2.yaml) | <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/body-battery-and-stress.png" alt="Body battery and stress card"><br>[06 · Battery and stress](examples/cards/06-body-battery-and-stress.yaml) |
+| <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/training-readiness.png" alt="Training readiness card"><br>[07 · Training readiness](examples/cards/07-training-readiness.yaml) | <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/body-composition.png" alt="Body composition card"><br>[08 · Body composition](examples/cards/08-body-composition.yaml) | <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/hydration-and-nutrition.png" alt="Hydration and nutrition card"><br>[09 · Hydration and nutrition](examples/cards/09-hydration-and-nutrition.yaml) |
+| <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/last-activity.png" alt="Last activity card"><br>[10 · Last activity](examples/cards/10-last-activity.yaml) | <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/goals-and-badges.png" alt="Goals and badges card"><br>[11 · Goals and badges](examples/cards/11-goals-and-badges.yaml) | <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/health-and-blood-pressure.png" alt="Health and blood pressure card"><br>[12 · Health and blood pressure](examples/cards/12-health-and-blood-pressure.yaml) |
+| <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/gear-and-battery.png" alt="Gear and battery card"><br>[13 · Gear and battery](examples/cards/13-gear-and-battery.yaml) | <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/everything.png" alt="All options in one card"><br>[14 · Everything at once](examples/cards/14-everything.yaml) | <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/everything-dark.png" alt="The same card in a dark theme"><br>[dark theme](examples/cards/14-everything.yaml) |
+
+### Designs
+
+| | | |
+| --- | --- | --- |
+| <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/rings-auto-columns.png" alt="Rings with automatic columns"><br>[Automatic columns](examples/designs/rings-auto-columns.yaml) | <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/rings-dense.png" alt="Six dense rings"><br>[Dense rings](examples/designs/rings-dense.yaml) | <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/rings-wide.png" alt="Eight rings, four per row"><br>[Wide, four per row](examples/designs/rings-wide.yaml) |
+| <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/bars.png" alt="Bars layout"><br>[Bars layout](examples/designs/bars.yaml) | <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/compact-tile.png" alt="Compact tile for a section"><br>[Compact tile](examples/designs/compact-tile.yaml) | <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/header-first.png" alt="Header first design"><br>[Header first](examples/designs/header-first.yaml) |
+| <img width="220" src="https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/preview/colors-and-themes.png" alt="Colors and themes"><br>[Colors and themes](examples/designs/colors-and-themes.yaml) | | |
 
 ---
 
@@ -417,6 +467,9 @@ npm test          # runs test/smoke.test.js, a jsdom based render test
 
 `test/smoke.test.js` boots the card inside jsdom with a fake `hass` object and checks
 rendering, goal resolution, attribute handling, the editor and the config validation.
+
+[`docs/preview`](docs/preview) contains the harness that renders the screenshots in this
+readme from the example YAML, so they cannot go stale unnoticed.
 
 ---
 

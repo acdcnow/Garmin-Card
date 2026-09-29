@@ -29,7 +29,6 @@ entities:
 
   - entity: sensor.garmin_connect_my_running_shoes
     name: Shoe mileage
-    units: km
     max: 800000         # meters, Garmin retires shoes around 800 km
     show_units: true
     color_stops:
