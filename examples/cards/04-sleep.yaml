@@ -1,0 +1,40 @@
+# Sleep
+#
+# Sleep score plus the sleep stages. "Sleep duration" can be compared against
+# the "Sleep need" sensor, which is a perfect `max_entity` candidate.
+type: custom:garmin-card
+title: Sleep
+show_units: true
+header_entities:
+  - entity: sensor.garmin_connect_bedtime
+    name: Bedtime
+  - entity: sensor.garmin_connect_wake_time
+    name: Wake
+  - entity: sensor.garmin_connect_sleep_score
+    name: Score
+entities:
+  # Total sleep compared with the sleep need Garmin calculated for you.
+  - entity: sensor.garmin_connect_sleep_duration
+    name: Sleep
+    max_entity: sensor.garmin_connect_sleep_need
+    color: '#7e57c2'
+
+  - entity: sensor.garmin_connect_deep_sleep
+    name: Deep
+    max: 120
+    color: '#3949ab'
+
+  - entity: sensor.garmin_connect_rem_sleep
+    name: REM
+    max: 120
+    color: '#00acc1'
+
+  - entity: sensor.garmin_connect_light_sleep
+    name: Light
+    max: 300
+    color: '#26a69a'
+
+  - entity: sensor.garmin_connect_awake_time
+    name: Awake
+    max: 60
+    color: '#ffb300'

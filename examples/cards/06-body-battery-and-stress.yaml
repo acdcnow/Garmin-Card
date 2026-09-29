@@ -1,0 +1,40 @@
+# Body battery and stress
+#
+# Here `color_stops` does the storytelling: a low body battery turns red on its
+# own, high stress on the average stress ring turns red as well.
+type: custom:garmin-card
+title: Energy
+header_entities:
+  - entity: sensor.garmin_connect_body_battery_charged
+    name: + charged
+  - entity: sensor.garmin_connect_body_battery_drained
+    name: − drained
+  - entity: sensor.garmin_connect_stress_qualifier
+entities:
+  - entity: sensor.garmin_connect_body_battery
+    name: Body battery
+    max: 100
+    color_stops:
+      0: '#e53935'
+      25: '#fb8c00'
+      50: '#fdd835'
+      75: '#43a047'
+
+  - entity: sensor.garmin_connect_average_stress_level
+    name: Stress
+    max: 100
+    color_stops:
+      0: '#43a047'
+      25: '#fdd835'
+      50: '#fb8c00'
+      75: '#e53935'
+
+  - entity: sensor.garmin_connect_rest_stress_duration
+    name: Rest
+    max: 720
+    color: '#26a69a'
+
+  - entity: sensor.garmin_connect_activity_stress_duration
+    name: Activity
+    max: 720
+    color: '#ff7043'

@@ -1,0 +1,86 @@
+# Everything at once
+#
+# A single card that shows the full option set: title, battery, header
+# entities, goals from other sensors, goals from attributes, attribute values,
+# colors by fill level, unit overrides and actions.
+type: custom:garmin-card
+title: Markus
+battery_entity: sensor.fenix_7_battery
+layout: rings
+columns: 4
+ring_size: 45
+show_units: true
+
+header_entities:
+  - entity: sensor.garmin_connect_resting_heart_rate
+    icon_color: '#e53935'
+  - entity: sensor.garmin_connect_body_battery
+    icon_color: '#43a047'
+  - entity: sensor.garmin_connect_sleep_score
+    icon_color: '#7e57c2'
+  - entity: sensor.garmin_connect_hrv_status
+    name: HRV
+
+entities:
+  # goal from another sensor
+  - entity: sensor.garmin_connect_steps
+    max_entity: sensor.garmin_connect_daily_step_goal
+    color: deepskyblue
+
+  # goal from an attribute
+  - entity: sensor.garmin_connect_intensity_minutes
+    name: Intensity
+    max_attribute: goal
+    color_stops:
+      0: '#607d8b'
+      50: '#ffb300'
+      80: '#43a047'
+
+  # attribute value with a unit override
+  - entity: sensor.garmin_connect_last_activity
+    attribute: distance
+    name: Last run
+    units: km
+    max: 10000
+    color: '#e91e63'
+
+  # score with a fixed maximum and colors
+  - entity: sensor.garmin_connect_sleep_score
+    name: Sleep
+    max: 100
+    color_stops:
+      0: '#e53935'
+      60: '#fb8c00'
+      80: '#43a047'
+
+  # hydration against its goal
+  - entity: sensor.garmin_connect_hydration
+    name: Water
+    max_entity: sensor.garmin_connect_hydration_goal
+    color: '#03a9f4'
+
+  # training readiness with a custom icon
+  - entity: sensor.garmin_connect_training_readiness
+    name: Readiness
+    icon: mdi:lightning-bolt
+    max: 100
+    color: '#7cb342'
+
+  # an action on the ring
+  - entity: sensor.garmin_connect_floors_ascended
+    name: Floors
+    max_entity: sensor.garmin_connect_floors_ascended_goal
+    color: '#8d6e63'
+    tap_action:
+      action: more-info
+    hold_action:
+      action: navigate
+      navigation_path: /lovelace/fitness
+
+  # last activity duration, in minutes
+  - entity: sensor.garmin_connect_last_activity
+    attribute: duration
+    name: Duration
+    units: min
+    max: 3600
+    color: '#9c27b0'

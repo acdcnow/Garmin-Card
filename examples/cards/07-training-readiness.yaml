@@ -1,0 +1,50 @@
+# Training readiness and fitness metrics
+#
+# Training readiness, recovery time and the aerobic metrics Garmin calculates.
+# Tap a ring to open the usual more-info dialog with all attributes.
+type: custom:garmin-card
+title: Training
+show_units: true
+header_entities:
+  - entity: sensor.garmin_connect_training_status
+    name: Status
+  - entity: sensor.garmin_connect_fitness_age
+    name: Fitness age
+  - entity: sensor.garmin_connect_lactate_threshold_heart_rate
+    name: LTHR
+entities:
+  - entity: sensor.garmin_connect_training_readiness
+    name: Readiness
+    max: 100
+    color_stops:
+      0: '#e53935'
+      40: '#fb8c00'
+      60: '#fdd835'
+      80: '#43a047'
+
+  - entity: sensor.garmin_connect_morning_training_readiness
+    name: Morning
+    max: 100
+    color: '#5c6bc0'
+
+  # Recovery time is in minutes; a full day is a sensible maximum.
+  - entity: sensor.garmin_connect_recovery_time
+    name: Recovery
+    units: h
+    max: 1440
+    color: '#8d6e63'
+
+  - entity: sensor.garmin_connect_vo2_max
+    name: VO2 max
+    max: 60
+    color: '#00897b'
+
+  - entity: sensor.garmin_connect_endurance_score
+    name: Endurance
+    max: 5000
+    color: '#00acc1'
+
+  - entity: sensor.garmin_connect_hill_score
+    name: Hill
+    max: 100
+    color: '#6d4c41'

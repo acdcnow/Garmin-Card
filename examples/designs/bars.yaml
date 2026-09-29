@@ -1,0 +1,32 @@
+# Design: bars
+#
+# The same data as horizontal bars. Bars always span the full card width and
+# are easier to read when the labels are long.
+type: custom:garmin-card
+title: Today
+layout: bars
+show_units: true
+header_entities:
+  - entity: sensor.garmin_connect_resting_heart_rate
+entities:
+  - entity: sensor.garmin_connect_steps
+    name: Steps
+    max_entity: sensor.garmin_connect_daily_step_goal
+    color: deepskyblue
+  - entity: sensor.garmin_connect_distance
+    name: Distance
+    units: km
+    max: 10000
+    color: '#00b294'
+  - entity: sensor.garmin_connect_calories
+    name: Calories
+    max: 2500
+    color: '#ff7043'
+  - entity: sensor.garmin_connect_intensity_minutes
+    name: Intensity minutes
+    max_attribute: goal
+    color: '#43a047'
+  - entity: sensor.garmin_connect_hydration
+    name: Hydration
+    max_entity: sensor.garmin_connect_hydration_goal
+    color: '#03a9f4'

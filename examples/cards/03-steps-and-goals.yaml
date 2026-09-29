@@ -1,0 +1,29 @@
+# Steps, goals and trends
+#
+# Three ways to get a maximum into a ring:
+#   1. max_entity    – the goal is its own sensor (the usual Garmin pattern)
+#   2. max_attribute – the goal is an attribute of the entity
+#   3. max           – no goal exists, scale manually
+type: custom:garmin-card
+title: Steps
+header: true
+header_entities:
+  - entity: sensor.garmin_connect_yesterday_steps
+    name: Yesterday
+  - entity: sensor.garmin_connect_weekly_step_average
+    name: Ø 7 days
+entities:
+  # 1. goal sensor
+  - entity: sensor.garmin_connect_steps
+    max_entity: sensor.garmin_connect_daily_step_goal
+    color: deepskyblue
+
+  # 2. goal attribute on the same entity (attributes: moderate, vigorous, goal)
+  - entity: sensor.garmin_connect_intensity_minutes
+    name: Intensity
+    max_attribute: goal
+
+  # 3. manual maximum
+  - entity: sensor.garmin_connect_active_calories
+    name: Active kcal
+    max: 1000

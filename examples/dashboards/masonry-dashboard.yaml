@@ -1,0 +1,91 @@
+# Garmin fitness dashboard (classic masonry view)
+#
+# A simpler variant of the sections dashboard for the default masonry layout.
+# Paste it into the raw configuration editor of a dashboard.
+views:
+  - title: Fitness
+    path: fitness
+    icon: mdi:watch
+    cards:
+      - type: custom:garmin-card
+        title: Today
+        battery_entity: sensor.fenix_7_battery
+        show_units: true
+        header_entities:
+          - entity: sensor.garmin_connect_resting_heart_rate
+            icon_color: '#e53935'
+          - entity: sensor.garmin_connect_body_battery
+            icon_color: '#43a047'
+          - entity: sensor.garmin_connect_sleep_score
+            icon_color: '#7e57c2'
+        entities:
+          - entity: sensor.garmin_connect_steps
+            max_entity: sensor.garmin_connect_daily_step_goal
+            color: deepskyblue
+          - entity: sensor.garmin_connect_distance
+            name: Distance
+            units: km
+            max: 10000
+            color: '#00b294'
+          - entity: sensor.garmin_connect_intensity_minutes
+            name: Intensity
+            max_attribute: goal
+            color: '#43a047'
+
+      - type: custom:garmin-card
+        title: Sleep
+        show_units: true
+        entities:
+          - entity: sensor.garmin_connect_sleep_duration
+            name: Sleep
+            max_entity: sensor.garmin_connect_sleep_need
+            color: '#7e57c2'
+          - entity: sensor.garmin_connect_sleep_score
+            name: Score
+            max: 100
+            color_stops:
+              0: '#e53935'
+              60: '#fb8c00'
+              80: '#43a047'
+
+      - type: custom:garmin-card
+        title: Training
+        layout: bars
+        show_units: true
+        header_entities:
+          - entity: sensor.garmin_connect_training_status
+            name: Status
+        entities:
+          - entity: sensor.garmin_connect_training_readiness
+            name: Training readiness
+            max: 100
+            color: '#007cc0'
+          - entity: sensor.garmin_connect_hrv_last_night_average
+            name: HRV last night
+            max: 100
+            color: '#8e24aa'
+          - entity: sensor.garmin_connect_recovery_time
+            name: Recovery time
+            units: h
+            max: 1440
+            color: '#8d6e63'
+          - entity: sensor.garmin_connect_vo2_max
+            name: VO2 max
+            max: 60
+            color: '#00897b'
+
+      - type: custom:garmin-card
+        title: Hydration
+        header: false
+        layout: bars
+        entities:
+          - entity: sensor.garmin_connect_hydration
+            name: Water
+            max_entity: sensor.garmin_connect_hydration_goal
+            show_units: true
+            color: '#03a9f4'
+          - entity: sensor.garmin_connect_hydration_sweat_loss
+            name: Sweat loss
+            max: 1500
+            show_units: true
+            color: '#0288d1'

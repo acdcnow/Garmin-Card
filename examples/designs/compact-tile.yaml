@@ -1,0 +1,29 @@
+# Design: compact tile for a sections dashboard
+#
+# A small tile: no header, two rings per row, small rings and only the four
+# values that matter most. Combined with the grid options below this fits a
+# 3x3 section cell.
+type: custom:garmin-card
+header: false
+columns: 2
+ring_size: 30
+grid_options:
+  columns: 6
+  rows: auto
+entities:
+  - entity: sensor.garmin_connect_steps
+    name: Steps
+    max_entity: sensor.garmin_connect_daily_step_goal
+    color: deepskyblue
+  - entity: sensor.garmin_connect_body_battery
+    name: Battery
+    max: 100
+    color: '#43a047'
+  - entity: sensor.garmin_connect_sleep_score
+    name: Sleep
+    max: 100
+    color: '#7e57c2'
+  - entity: sensor.garmin_connect_training_readiness
+    name: Ready
+    max: 100
+    color: '#ffb300'

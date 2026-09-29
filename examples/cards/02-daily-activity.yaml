@@ -1,0 +1,39 @@
+# Daily activity
+#
+# The classic ring trio: steps, distance and calories, plus floors and
+# intensity minutes. Every ring fills up to a real Garmin goal.
+type: custom:garmin-card
+title: Activity
+show_units: true
+entities:
+  - entity: sensor.garmin_connect_steps
+    max_entity: sensor.garmin_connect_daily_step_goal
+    color: deepskyblue
+
+  # Distance is reported in meters.
+  - entity: sensor.garmin_connect_distance
+    name: Distance
+    units: km
+    max: 10000
+
+  - entity: sensor.garmin_connect_calories
+    name: Calories
+    max: 2500
+    color: '#ff7043'
+
+  - entity: sensor.garmin_connect_active_calories
+    name: Active
+    max: 1000
+    color: '#f4511e'
+
+  - entity: sensor.garmin_connect_floors_ascended
+    name: Floors
+    max_entity: sensor.garmin_connect_floors_ascended_goal
+
+  - entity: sensor.garmin_connect_intensity_minutes
+    name: Intensity
+    max_attribute: goal
+    color_stops:
+      0: '#607d8b'
+      50: '#ffb300'
+      80: '#43a047'

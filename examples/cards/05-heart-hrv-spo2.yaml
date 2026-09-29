@@ -1,0 +1,40 @@
+# Heart rate, HRV and blood oxygen
+#
+# Header entities for the readings you only glance at, rings for the ones you
+# want to see as a value against a range.
+type: custom:garmin-card
+title: Heart health
+show_units_header: true
+header_entities:
+  - entity: sensor.garmin_connect_resting_heart_rate
+    icon_color: '#e53935'
+  - entity: sensor.garmin_connect_hrv_status
+    name: HRV status
+  - entity: sensor.garmin_connect_latest_spo2
+    icon_color: '#1e88e5'
+entities:
+  # HRV trend: the nightly average against a 100 ms scale.
+  - entity: sensor.garmin_connect_hrv_last_night_average
+    name: HRV
+    max: 100
+    color: '#8e24aa'
+
+  - entity: sensor.garmin_connect_hrv_weekly_average
+    name: HRV Ø 7
+    max: 100
+    color: '#ab47bc'
+
+  # Blood oxygen
+  - entity: sensor.garmin_connect_latest_spo2
+    name: SpO2
+    max: 100
+    color: '#1e88e5'
+    color_stops:
+      0: '#e53935'
+      90: '#fb8c00'
+      95: '#43a047'
+
+  - entity: sensor.garmin_connect_latest_respiration
+    name: Respiration
+    max: 25
+    color: '#00acc1'

@@ -1,0 +1,231 @@
+# Garmin fitness dashboard (sections view)
+#
+# A complete dashboard that combines the Garmin Card with a few built in cards.
+# Import it through Settings -> Dashboards -> Add dashboard -> New dashboard
+# from scratch, then open the raw configuration editor and paste this.
+#
+# Every section is a grid, the cards inside use the Garmin entities of the
+# Garmin Connect integration. Replace the entity ids if you renamed yours.
+views:
+  - title: Fitness
+    path: fitness
+    icon: mdi:watch
+    type: sections
+    max_columns: 4
+    sections:
+      # ---------------------------------------------------------------- today
+      - type: grid
+        cards:
+          - type: heading
+            heading: Today
+            icon: mdi:walk
+
+          - type: custom:garmin-card
+            title: Markus
+            battery_entity: sensor.fenix_7_battery
+            show_units: true
+            header_entities:
+              - entity: sensor.garmin_connect_resting_heart_rate
+                icon_color: '#e53935'
+              - entity: sensor.garmin_connect_body_battery
+                icon_color: '#43a047'
+              - entity: sensor.garmin_connect_sleep_score
+                icon_color: '#7e57c2'
+            entities:
+              - entity: sensor.garmin_connect_steps
+                max_entity: sensor.garmin_connect_daily_step_goal
+                color: deepskyblue
+              - entity: sensor.garmin_connect_distance
+                name: Distance
+                units: km
+                max: 10000
+                color: '#00b294'
+              - entity: sensor.garmin_connect_calories
+                name: Calories
+                max: 2500
+                color: '#ff7043'
+              - entity: sensor.garmin_connect_intensity_minutes
+                name: Intensity
+                max_attribute: goal
+                color_stops:
+                  0: '#607d8b'
+                  50: '#ffb300'
+                  80: '#43a047'
+              - entity: sensor.garmin_connect_floors_ascended
+                name: Floors
+                max_entity: sensor.garmin_connect_floors_ascended_goal
+                color: '#8d6e63'
+
+          - type: custom:garmin-card
+            title: Scores
+            layout: bars
+            header: false
+            entities:
+              - entity: sensor.garmin_connect_sleep_score
+                name: Sleep score
+                max: 100
+                color: '#7e57c2'
+              - entity: sensor.garmin_connect_training_readiness
+                name: Training readiness
+                max: 100
+                show_units: true
+                color: '#007cc0'
+              - entity: sensor.garmin_connect_body_battery
+                name: Body battery
+                max: 100
+                show_units: true
+                color: '#10a13c'
+              - entity: sensor.garmin_connect_average_stress_level
+                name: Stress level
+                max: 100
+                color: '#ff9800'
+
+      # ----------------------------------------------------------- sleep
+      - type: grid
+        cards:
+          - type: heading
+            heading: Sleep
+            icon: mdi:sleep
+
+          - type: custom:garmin-card
+            title: Last night
+            show_units: true
+            header_entities:
+              - entity: sensor.garmin_connect_bedtime
+                name: Bedtime
+              - entity: sensor.garmin_connect_wake_time
+                name: Wake
+            entities:
+              - entity: sensor.garmin_connect_sleep_duration
+                name: Sleep
+                max_entity: sensor.garmin_connect_sleep_need
+                color: '#7e57c2'
+              - entity: sensor.garmin_connect_deep_sleep
+                name: Deep
+                max: 120
+                color: '#3949ab'
+              - entity: sensor.garmin_connect_rem_sleep
+                name: REM
+                max: 120
+                color: '#00acc1'
+              - entity: sensor.garmin_connect_light_sleep
+                name: Light
+                max: 300
+                color: '#26a69a'
+              - entity: sensor.garmin_connect_awake_time
+                name: Awake
+                max: 60
+                color: '#ffb300'
+
+          - type: custom:garmin-card
+            title: Recovery
+            header: false
+            columns: 2
+            show_units: true
+            entities:
+              - entity: sensor.garmin_connect_hrv_last_night_average
+                name: HRV
+                max: 100
+                color: '#8e24aa'
+              - entity: sensor.garmin_connect_recovery_time
+                name: Recovery
+                units: h
+                max: 1440
+                color: '#8d6e63'
+
+      # --------------------------------------------------------- training
+      - type: grid
+        cards:
+          - type: heading
+            heading: Training
+            icon: mdi:run
+
+          - type: custom:garmin-card
+            title: Fitness
+            show_units: true
+            header_entities:
+              - entity: sensor.garmin_connect_training_status
+                name: Status
+              - entity: sensor.garmin_connect_fitness_age
+                name: Fitness age
+            entities:
+              - entity: sensor.garmin_connect_training_readiness
+                name: Readiness
+                max: 100
+                color_stops:
+                  0: '#e53935'
+                  40: '#fb8c00'
+                  60: '#fdd835'
+                  80: '#43a047'
+              - entity: sensor.garmin_connect_vo2_max
+                name: VO2 max
+                max: 60
+                color: '#00897b'
+              - entity: sensor.garmin_connect_endurance_score
+                name: Endurance
+                max: 5000
+                color: '#00acc1'
+              - entity: sensor.garmin_connect_hill_score
+                name: Hill
+                max: 100
+                color: '#6d4c41'
+
+          - type: custom:garmin-card
+            title: Last activity
+            header: false
+            layout: bars
+            entities:
+              - entity: sensor.garmin_connect_last_activity
+                name: Activity
+                max: 1
+                color: '#e91e63'
+              - entity: sensor.garmin_connect_last_activity
+                attribute: distance
+                name: Distance
+                units: km
+                max: 10000
+                show_units: true
+                color: '#9c27b0'
+              - entity: sensor.garmin_connect_last_activity
+                attribute: duration
+                name: Duration
+                units: min
+                max: 3600
+                show_units: true
+                color: '#5c6bc0'
+              - entity: sensor.garmin_connect_next_scheduled_workout
+                name: Next workout
+                max: 1
+                color: '#7cb342'
+
+      # ------------------------------------------------------------- body
+      - type: grid
+        cards:
+          - type: heading
+            heading: Body
+            icon: mdi:scale-bathroom
+
+          - type: custom:garmin-card
+            title: Body
+            show_units: true
+            header_entities:
+              - entity: sensor.garmin_connect_metabolic_age
+                name: Metab. age
+              - entity: sensor.garmin_connect_bone_mass
+            entities:
+              - entity: sensor.garmin_connect_weight
+                name: Weight
+                max: 90
+                color: '#5c6bc0'
+              - entity: sensor.garmin_connect_body_fat
+                name: Body fat
+                max: 40
+                color: '#ef6c00'
+              - entity: sensor.garmin_connect_muscle_mass
+                name: Muscle
+                max: 45
+                color: '#00897b'
+              - entity: sensor.garmin_connect_hydration
+                name: Water
+                max_entity: sensor.garmin_connect_hydration_goal
+                color: '#03a9f4'

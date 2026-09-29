@@ -1,0 +1,29 @@
+# Design: many rings, four per row
+#
+# The full picture on one card. Four columns keep the values on one or two
+# rows, `show_units: true` adds the units to the ring.
+type: custom:garmin-card
+title: All metrics
+show_units: true
+columns: 4
+ring_size: 40
+header_entities:
+  - entity: sensor.garmin_connect_training_status
+    name: Status
+entities:
+  - entity: sensor.garmin_connect_steps
+    max_entity: sensor.garmin_connect_daily_step_goal
+  - entity: sensor.garmin_connect_distance
+    max: 10000
+  - entity: sensor.garmin_connect_calories
+    max: 2500
+  - entity: sensor.garmin_connect_intensity_minutes
+    max_attribute: goal
+  - entity: sensor.garmin_connect_sleep_score
+    max: 100
+  - entity: sensor.garmin_connect_body_battery
+    max: 100
+  - entity: sensor.garmin_connect_training_readiness
+    max: 100
+  - entity: sensor.garmin_connect_hydration
+    max_entity: sensor.garmin_connect_hydration_goal

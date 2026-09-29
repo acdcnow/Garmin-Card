@@ -1,0 +1,44 @@
+# Last activity
+#
+# `sensor.garmin_connect_last_activity` has the activity name as its state and
+# distance, duration, activity id and type as attributes. With `attribute:` the
+# same sensor can drive several rings.
+type: custom:garmin-card
+title: Last activity
+header_entities:
+  # the state of the sensor *is* the activity name
+  - entity: sensor.garmin_connect_last_activity
+    name: Last run
+    icon: mdi:run-fast
+entities:
+  - entity: sensor.garmin_connect_last_activity
+    attribute: distance
+    name: Distance
+    units: km
+    max: 10000          # meters
+    show_units: true
+    color: '#e91e63'
+
+  - entity: sensor.garmin_connect_last_activity
+    attribute: duration
+    name: Duration
+    units: min
+    max: 3600           # seconds
+    show_units: true
+    color: '#9c27b0'
+
+  # Actions: tap opens the more-info dialog (default), hold opens Garmin
+  # Connect in a new tab, double tap navigates to another dashboard view.
+  - entity: sensor.garmin_connect_last_activity
+    attribute: duration
+    name: Duration (with actions)
+    units: min
+    max: 3600
+    tap_action:
+      action: more-info
+    hold_action:
+      action: url
+      url_path: https://connect.garmin.com/modern/
+    double_tap_action:
+      action: navigate
+      navigation_path: /lovelace/fitness

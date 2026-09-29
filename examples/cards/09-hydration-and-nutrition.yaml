@@ -1,0 +1,49 @@
+# Hydration and nutrition
+#
+# Both the hydration and the nutrition sensors work against their goal sensors.
+# Nutrition needs Garmin Connect+ and the sensors must be enabled first.
+#
+# The water ring also demonstrates an action: tapping it logs 250 ml to Garmin
+# Connect through the integration's service.
+type: custom:garmin-card
+title: Fuel
+show_units: true
+entities:
+  # 1. of 2 liters: the goal sensor provides the maximum
+  - entity: sensor.garmin_connect_hydration
+    name: Water
+    max_entity: sensor.garmin_connect_hydration_goal
+    color: '#03a9f4'
+    tap_action:
+      action: perform-action
+      perform_action: garmin_connect.add_hydration
+      data:
+        value_in_ml: 250
+      target:
+        entity_id: sensor.garmin_connect_hydration
+
+  - entity: sensor.garmin_connect_hydration_sweat_loss
+    name: Sweat loss
+    max: 1500
+    color: '#0288d1'
+
+  # 2. macros against their goals
+  - entity: sensor.garmin_connect_nutrition_consumed_calories
+    name: Calories
+    max_entity: sensor.garmin_connect_nutrition_calorie_goal
+    color: '#ef6c00'
+
+  - entity: sensor.garmin_connect_nutrition_consumed_protein
+    name: Protein
+    max_entity: sensor.garmin_connect_nutrition_protein_goal
+    color: '#8e24aa'
+
+  - entity: sensor.garmin_connect_nutrition_consumed_carbohydrates
+    name: Carbs
+    max_entity: sensor.garmin_connect_nutrition_carbohydrates_goal
+    color: '#43a047'
+
+  - entity: sensor.garmin_connect_nutrition_consumed_fat
+    name: Fat
+    max_entity: sensor.garmin_connect_nutrition_fat_goal
+    color: '#fdd835'

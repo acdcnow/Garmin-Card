@@ -1,0 +1,53 @@
+# Design: colors and themes
+#
+# The card follows the active theme. These Home Assistant CSS variables are
+# used, so a theme can restyle the card without touching the card YAML:
+#
+#   --primary-color           default ring and focus color
+#   --state-icon-color        header icons and bar icons
+#   --divider-color           ring track and bar background
+#   --primary-text-color      values and labels
+#   --secondary-text-color    ring labels and hints
+#   --success-color / --warning-color / --error-color   battery indicator
+#   --ha-font-size-s / -m / -l                          typography
+#
+# Everything can also be set per entity, as shown below.
+type: custom:garmin-card
+title: Colorful
+entities:
+  # a fixed color
+  - entity: sensor.garmin_connect_steps
+    name: Steps
+    max_entity: sensor.garmin_connect_daily_step_goal
+    color: deepskyblue
+
+  # a hex value
+  - entity: sensor.garmin_connect_body_battery
+    name: Battery
+    max: 100
+    color: '#14308D'
+
+  # a green to red ramp for a value that should stay low
+  - entity: sensor.garmin_connect_average_stress_level
+    name: Stress
+    max: 100
+    color_stops:
+      0: '#43a047'
+      25: '#fdd835'
+      50: '#fb8c00'
+      75: '#e53935'
+
+  # a red to green ramp for a value that should stay high
+  - entity: sensor.garmin_connect_latest_spo2
+    name: SpO2
+    max: 100
+    color_stops:
+      0: '#e53935'
+      90: '#fb8c00'
+      95: '#43a047'
+
+  # icon_color also accents a ring
+  - entity: sensor.garmin_connect_sleep_score
+    name: Sleep
+    max: 100
+    icon_color: '#7e57c2'

@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="380" viewBox="0 0 980 380" role="img" aria-label="Garmin Card layout schematic: a card with a header, four progress rings and a bars layout">
+  <title>Garmin Card layout schematic</title>
+  <desc>Left: the default rings layout with a header showing the title, a battery indicator and three header entities. Right: the same data using the bars layout.</desc>
+
+  <rect width="980" height="380" fill="#fafafa"/>
+
+  <!-- ============================ rings layout ============================ -->
+  <g>
+    <rect x="16" y="16" width="580" height="312" rx="14" fill="#ffffff" stroke="#e0e0e0"/>
+
+    <!-- header -->
+    <text x="40" y="62" font-family="Roboto, Helvetica, Arial, sans-serif" font-size="22" font-weight="500" fill="#212121">Markus</text>
+
+    <!-- battery indicator: 62 % -->
+    <g transform="translate(134 46)">
+      <rect x="0" y="0" width="34" height="16" rx="3" fill="none" stroke="#9e9e9e" stroke-width="2"/>
+      <rect x="34" y="5" width="4" height="6" rx="1.5" fill="#9e9e9e"/>
+      <rect x="3" y="3" width="17" height="10" rx="1.5" fill="#10a13c"/>
+    </g>
+
+    <!-- header entities -->
+    <g font-family="Roboto, Helvetica, Arial, sans-serif" font-size="14" fill="#212121">
+      <circle cx="332" cy="53" r="7" fill="#44739e"/>
+      <text x="346" y="58">48 bpm</text>
+      <circle cx="428" cy="53" r="7" fill="#44739e"/>
+      <text x="442" y="58">72 %</text>
+      <circle cx="506" cy="53" r="7" fill="#da3116"/>
+      <text x="520" y="58">81</text>
+    </g>
+
+    <!-- progress rings: circumference 2*pi*45 = 282.743 -->
+    <g fill="none" stroke-width="9">
+      <circle cx="110" cy="210" r="45" stroke="#e6e6e6" opacity="0.8"/>
+      <circle cx="110" cy="210" r="45" stroke="#007cc0" stroke-linecap="round"
+              stroke-dasharray="282.743" stroke-dashoffset="45.24" transform="rotate(-90 110 210)"/>
+
+      <circle cx="240" cy="210" r="45" stroke="#e6e6e6" opacity="0.8"/>
+      <circle cx="240" cy="210" r="45" stroke="#00b294" stroke-linecap="round"
+              stroke-dasharray="282.743" stroke-dashoffset="101.79" transform="rotate(-90 240 210)"/>
+
+      <circle cx="370" cy="210" r="45" stroke="#e6e6e6" opacity="0.8"/>
+      <circle cx="370" cy="210" r="45" stroke="#ff9800" stroke-linecap="round"
+              stroke-dasharray="282.743" stroke-dashoffset="203.58" transform="rotate(-90 370 210)"/>
+
+      <circle cx="500" cy="210" r="45" stroke="#e6e6e6" opacity="0.8"/>
+      <circle cx="500" cy="210" r="45" stroke="#e91e63" stroke-linecap="round"
+              stroke-dasharray="282.743" stroke-dashoffset="76.34" transform="rotate(-90 500 210)"/>
+    </g>
+
+    <!-- ring values -->
+    <g font-family="Roboto, Helvetica, Arial, sans-serif" font-size="20" font-weight="500" fill="#212121" text-anchor="middle" dominant-baseline="central">
+      <text x="110" y="210">8,432</text>
+      <text x="240" y="210">6.42</text>
+      <text x="370" y="210">42</text>
+      <text x="500" y="210">7.3</text>
+    </g>
+
+    <!-- ring labels -->
+    <g font-family="Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#6e6e6e" text-anchor="middle">
+      <text x="110" y="278">Steps</text>
+      <text x="240" y="278">Distance</text>
+      <text x="370" y="278">Intensity</text>
+      <text x="500" y="278">Last run</text>
+    </g>
+  </g>
+
+  <!-- ============================ bars layout ============================= -->
+  <g>
+    <rect x="612" y="16" width="352" height="312" rx="14" fill="#ffffff" stroke="#e0e0e0"/>
+
+    <text x="636" y="62" font-family="Roboto, Helvetica, Arial, sans-serif" font-size="18" font-weight="500" fill="#212121">Today</text>
+
+    <g font-family="Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#212121">
+      <text x="636" y="100">Sleep score</text>
+      <text x="940" y="100" text-anchor="end">81</text>
+      <rect x="636" y="108" width="304" height="8" rx="4" fill="#e6e6e6"/>
+      <rect x="636" y="108" width="246.2" height="8" rx="4" fill="#7e57c2"/>
+
+      <text x="636" y="154">Training readiness</text>
+      <text x="940" y="154" text-anchor="end">64 %</text>
+      <rect x="636" y="162" width="304" height="8" rx="4" fill="#e6e6e6"/>
+      <rect x="636" y="162" width="194.6" height="8" rx="4" fill="#007cc0"/>
+
+      <text x="636" y="208">Body battery</text>
+      <text x="940" y="208" text-anchor="end">72 %</text>
+      <rect x="636" y="216" width="304" height="8" rx="4" fill="#e6e6e6"/>
+      <rect x="636" y="216" width="218.9" height="8" rx="4" fill="#10a13c"/>
+
+      <text x="636" y="262">Stress level</text>
+      <text x="940" y="262" text-anchor="end">34</text>
+      <rect x="636" y="270" width="304" height="8" rx="4" fill="#e6e6e6"/>
+      <rect x="636" y="270" width="103.4" height="8" rx="4" fill="#ff9800"/>
+    </g>
+  </g>
+
+  <!-- ============================== captions ============================== -->
+  <g font-family="Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#6e6e6e" text-anchor="middle">
+    <text x="306" y="358">Rings layout with goals from max_entity / max_attribute</text>
+    <text x="788" y="358">Bars layout: layout: bars</text>
+  </g>
+</svg>

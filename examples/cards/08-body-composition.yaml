@@ -1,0 +1,45 @@
+# Body composition
+#
+# Body metrics have no goal, so the rings show the value against a range that
+# you choose. Adjust the `max` values to your own range.
+type: custom:garmin-card
+title: Body
+show_units: true
+header_entities:
+  - entity: sensor.garmin_connect_metabolic_age
+    name: Metab. age
+  - entity: sensor.garmin_connect_bone_mass
+  - entity: sensor.garmin_connect_visceral_fat
+entities:
+  - entity: sensor.garmin_connect_weight
+    name: Weight
+    max: 90
+    color: '#5c6bc0'
+
+  - entity: sensor.garmin_connect_bmi
+    name: BMI
+    max: 35
+    color_stops:
+      0: '#42a5f5'
+      25: '#43a047'
+      35: '#e53935'
+
+  - entity: sensor.garmin_connect_body_fat
+    name: Body fat
+    max: 40
+    color: '#ef6c00'
+
+  - entity: sensor.garmin_connect_muscle_mass
+    name: Muscle
+    max: 45
+    color: '#00897b'
+
+  - entity: sensor.garmin_connect_body_water
+    name: Water
+    max: 70
+    color: '#03a9f4'
+
+  - entity: sensor.garmin_connect_fitness_age
+    name: Fitness age
+    max: 60
+    color: '#7cb342'

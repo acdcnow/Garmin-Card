@@ -1,0 +1,40 @@
+# Watch battery, devices and gear
+#
+# `battery_entity` accepts any battery sensor. Numeric percentages get the
+# matching battery icon and change color when the level drops.
+#
+# Gear sensors are created dynamically by the integration for every piece of
+# equipment in your Garmin account, e.g. sensor.garmin_connect_my_running_shoes.
+type: custom:garmin-card
+title: Gear
+battery_entity: sensor.fenix_7_battery
+battery_colors:
+  high: '#10a13c'
+  medium: '#dee023'
+  low: '#da3116'
+header_entities:
+  - entity: sensor.garmin_connect_devices
+    name: Devices
+  - entity: sensor.garmin_connect_connected_sensors
+    name: Sensors
+  - entity: sensor.garmin_connect_solar_intensity
+    show_units: true
+entities:
+  # Replace these with the gear sensors of your own account.
+  - entity: sensor.garmin_connect_my_running_shoes
+    attribute: total_activities
+    name: Runs in shoes
+    max: 100
+    color: '#8d6e63'
+
+  - entity: sensor.garmin_connect_my_running_shoes
+    name: Shoe mileage
+    units: km
+    max: 800000         # meters, Garmin retires shoes around 800 km
+    show_units: true
+    color_stops:
+      0: '#43a047'
+      75: '#fb8c00'
+      95: '#e53935'
+    tap_action:
+      action: more-info

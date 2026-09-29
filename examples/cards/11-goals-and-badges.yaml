@@ -1,0 +1,42 @@
+# Goals, badges, level and the next race
+#
+# Garmin gamification and the training plan. `training_plan_goal_event` carries
+# the countdown in the `days_until_event` attribute.
+type: custom:garmin-card
+title: Goals
+header_entities:
+  - entity: sensor.garmin_connect_user_level
+    name: Level
+  - entity: sensor.garmin_connect_badges
+    name: Badges
+  - entity: sensor.garmin_connect_last_synced
+    name: Synced
+entities:
+  - entity: sensor.garmin_connect_active_goals
+    name: Active goals
+    max: 5
+    color: '#00acc1'
+
+  - entity: sensor.garmin_connect_future_goals
+    name: Future goals
+    max: 5
+    color: '#7cb342'
+
+  - entity: sensor.garmin_connect_goals_history
+    name: Completed
+    max: 10
+    color: '#43a047'
+
+  # Countdown to the goal event of the active training plan.
+  - entity: sensor.garmin_connect_training_plan_goal_event
+    attribute: days_until_event
+    name: Race in
+    units: days
+    max: 100
+    show_units: true
+    color: '#e53935'
+
+  - entity: sensor.garmin_connect_user_points
+    name: Points
+    max: 50000
+    color: '#ffb300'

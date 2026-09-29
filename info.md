@@ -1,88 +1,98 @@
-# Fitbit Card for Home Assistant
-Show your Fitbit stats
+# Garmin Card
 
-<img src='https://raw.githubusercontent.com/ljmerza/fitbit-card/master/card.jpg' />
+Show your Garmin Connect fitness data in Home Assistant: animated activity rings,
+daily goals, sleep, body battery, stress, training readiness, body composition and
+more.
 
+![Garmin Card layout](https://raw.githubusercontent.com/acdcnow/Garmin-Card/master/docs/garmin-card-layout.svg)
 
-## Installation through [HACS](https://github.com/custom-components/hacs)
----
-Add the following to resources in your lovelace config:
+## Installation
+
+### HACS
+
+1. Open HACS and go to **Dashboard** (plugins).
+2. Three dot menu → **Custom repositories**.
+3. Add `https://github.com/acdcnow/Garmin-Card` with category **Dashboard**.
+4. Download **Garmin Card** and hard refresh your browser.
+
+### Manual
+
+Copy `garmin-card.js` to `<config>/www/` and add it as a resource
+(**Settings → Dashboards → Resources**):
 
 ```yaml
-resources:
-  - url: /community_plugin/fitbit-card/fitbit-card.js
-    type: js
+url: /local/garmin-card.js
+type: module
 ```
 
-## Configurations:
----
+## Requirements
+
+- Home Assistant 2026.9 or newer.
+- The [Garmin Connect integration](https://github.com/cyberjunky/home-assistant-garmin_connect)
+  for the data.
+
+## Configuration
+
 ```yaml
-type: 'custom:fitbit-card'
-battery_entity: sensor.versa_battery
+type: custom:garmin-card
+title: Markus
+battery_entity: sensor.fenix_7_battery
 header_entities:
-  - entity: sensor.tracker_steps
-    icon_color: '#14308D'
-  - entity: sensor.distance
-    show_units: true
-  - entity: sensor.tracker_calories
-    icon_color: red
+  - entity: sensor.garmin_connect_resting_heart_rate
+  - entity: sensor.garmin_connect_body_battery
+  - entity: sensor.garmin_connect_sleep_score
 entities:
-  - entity: sensor.minutes_sedentary
-    max: 1000
-  - entity: sensor.minutes_very_active
-    max: 120
-  - entity: sensor.minutes_lightly_active
-    max: 50
-    color_stops:
-      '0': red
-      '50': yellow
-      '90': green
-  - entity: sensor.resting_heart_rate
+  # rings that fill up to your Garmin goals
+  - entity: sensor.garmin_connect_steps
+    max_entity: sensor.garmin_connect_daily_step_goal
+  - entity: sensor.garmin_connect_intensity_minutes
+    max_attribute: goal
+  - entity: sensor.garmin_connect_floors_ascended
+    max_entity: sensor.garmin_connect_floors_ascended_goal
+  # and a ring that reads an attribute
+  - entity: sensor.garmin_connect_last_activity
+    attribute: distance
+    name: Last run
+    units: km
+    max: 10
     show_units: true
 ```
 
 ## Options
----
-| Name | Type | Requirement | `Default value` Description
+
+| Name | Type | Default | Description
 | ---- | ---- | ------- | -----------
-| type | string | **Required** | `custom:fitbit-card`
-| battery_entity | string | **Optional** | Battery entity to show battery status
-| header | boolean | **Optional** | `true` Show/hide header
-| header_entities | list | **Optional** | `[]` List of fitbit sensors to display in the header
-| show_units_header | boolean | **Optional** | `false` Show units for all header entities
-| entities | list | **Optional** | `[]` List of fitbit sensors to display in the body
-| max | string | **Optional** | `100` Global maximum value for body entities
+| `type` | string | **required** | `custom:garmin-card`
+| `entities` | list | `[]` | Entities shown as rings or bars
+| `title` | string | – | Title shown in the header
+| `battery_entity` | string | – | Battery sensor shown next to the title
+| `battery_colors` | map | – | `high`, `medium`, `low` colors of the battery indicator
+| `header` | boolean | `true` | Show/hide the header
+| `header_entities` | list | `[]` | Compact entities in the header
+| `show_units` | boolean | `false` | Show units for all body entities
+| `show_units_header` | boolean | `false` | Show units for all header entities
+| `max` | number | `100` | Global maximum for body entities
+| `layout` | string | `rings` | `rings` or `bars`
+| `columns` | number | *auto* | Rings per row (1 – 6)
+| `ring_size` | number | `45` | Ring radius in pixels (24 – 80)
 
+### Entity options
 
-### header_entities options
-
-| Name | Type | Requirement | `Default value` Description
+| Name | Type | Default | Description
 | ---- | ---- | ------- | -----------
-| entity | string | **Required** | Name of entitiy
-| icon_color | string | **Optional** | color of icon next to entity (can be color name or hex value)
-| show_units | boolean | **Optional** | `false` show units next to entity value (show_units_header overrides this)
-| units | string | **Optional** | override default units with custom units
+| `entity` | string | **required** | Entity id
+| `attribute` | string | – | Show an attribute instead of the state
+| `name` | string | *friendly name* | Label override
+| `icon` | string | *entity icon* | Icon override
+| `icon_color` | string | – | Accent / ring color
+| `color` | string | – | Fixed ring color
+| `color_stops` | map | – | Color by fill percentage, e.g. `0: red, 60: green`
+| `max` | number | *global `max`* | Maximum value
+| `max_entity` | string | – | Maximum from another entity (goal sensor)
+| `max_attribute` | string | – | Maximum from an attribute, e.g. `goal`
+| `show_units` | boolean | *card default* | Show the unit
+| `units` | string | *unit of measurement* | Unit override
+| `tap_action` / `hold_action` / `double_tap_action` | action | `more-info` on tap | Actions
 
-### entities options
-
-| Name | Type | Requirement | `Default value` Description
-| ---- | ---- | ------- | -----------
-| entity | string | **Required** | Name of entitiy
-| max | number | **Optional** | `global max value` override global maxiumum value for this entity
-| color_stops | list | **Optional** | `--primary-color` custom colors for percent circle
-| show_units | boolean | **Optional** | `false` show units next to value
-| units | string | **Optional** | override default units with custom units
-
----
-
-Enjoy my work? Help me out for a couple of :beers: or a :coffee:!
-
-<a href="https://www.buymeacoffee.com/JMISm06AD"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="41" width="174"></a>
-
-
-[commits-shield]: https://img.shields.io/github/commit-activity/y/ljmerza/fitbit-card.svg?style=for-the-badge
-[commits]: https://github.com/ljmerza/fitbit-card/commits/master
-[license-shield]: https://img.shields.io/github/license/ljmerza/fitbit-card.svg?style=for-the-badge
-[maintenance-shield]: https://img.shields.io/badge/maintainer-Leonardo%20Merza%20%40ljmerza-blue.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/ljmerza/fitbit-card.svg?style=for-the-badge
-[releases]: https://github.com/ljmerza/fitbit-card/releases
+Full documentation, examples and a dashboard in the
+[repository](https://github.com/acdcnow/Garmin-Card).

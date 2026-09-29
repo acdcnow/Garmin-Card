@@ -1,0 +1,48 @@
+# Blood pressure and health monitoring
+#
+# Blood pressure sensors come from a Garmin blood pressure device such as the
+# Index BPM. The systolic sensor also carries `diastolic` and `pulse` in its
+# attributes, so one entity can drive three rings.
+type: custom:garmin-card
+title: Health
+header_entities:
+  - entity: sensor.garmin_connect_blood_pressure_category
+    name: Category
+  - entity: sensor.garmin_connect_average_spo2
+    name: SpO2 Ø
+  - entity: sensor.garmin_connect_average_sleep_respiration
+    name: Respiration
+entities:
+  # One entity, three values
+  - entity: sensor.garmin_connect_blood_pressure_systolic
+    attribute: diastolic
+    name: Diastolic
+    max: 150
+    color: '#26a69a'
+
+  - entity: sensor.garmin_connect_blood_pressure_systolic
+    attribute: pulse
+    name: Pulse
+    max: 150
+    color: '#e53935'
+
+  - entity: sensor.garmin_connect_blood_pressure_systolic
+    name: Systolic
+    max: 200
+    color: '#8e24aa'
+
+  - entity: sensor.garmin_connect_lowest_spo2
+    name: SpO2 min
+    max: 100
+    color_stops:
+      0: '#e53935'
+      90: '#fb8c00'
+      95: '#43a047'
+
+  - entity: sensor.garmin_connect_skin_temperature_change
+    attribute: calibration_days
+    name: Calibration
+    units: days
+    max: 21
+    show_units: true
+    color: '#5c6bc0'

@@ -1,0 +1,11 @@
+# Minimal Garmin card
+#
+# Everything except `entities` is optional. Without a maximum the card falls
+# back to the global `max` of 100.
+type: custom:garmin-card
+entities:
+  - entity: sensor.garmin_connect_steps
+    max_entity: sensor.garmin_connect_daily_step_goal
+  - entity: sensor.garmin_connect_distance
+    max: 10000          # meters, so this is a 10 km ring
+  - entity: sensor.garmin_connect_sleep_score

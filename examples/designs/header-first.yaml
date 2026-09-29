@@ -1,0 +1,30 @@
+# Design: header first
+#
+# Sometimes the numbers are enough and rings are overkill. A header with four
+# compact entities plus two rings for the goals you actually track.
+type: custom:garmin-card
+title: Markus
+battery_entity: sensor.fenix_7_battery
+header_entities:
+  - entity: sensor.garmin_connect_resting_heart_rate
+    show_units: true
+    icon_color: '#e53935'
+  - entity: sensor.garmin_connect_body_battery
+    show_units: true
+    icon_color: '#43a047'
+  - entity: sensor.garmin_connect_sleep_score
+    icon_color: '#7e57c2'
+  - entity: sensor.garmin_connect_steps
+    show_units: true
+    icon_color: deepskyblue
+  - entity: sensor.garmin_connect_last_activity
+    name: Last activity
+entities:
+  - entity: sensor.garmin_connect_steps
+    name: Step goal
+    max_entity: sensor.garmin_connect_daily_step_goal
+    color: deepskyblue
+  - entity: sensor.garmin_connect_intensity_minutes
+    name: Intensity
+    max_attribute: goal
+    color: '#43a047'

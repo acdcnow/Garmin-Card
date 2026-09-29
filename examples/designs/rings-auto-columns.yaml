@@ -1,0 +1,23 @@
+# Design: rings with automatic columns
+#
+# Without `columns` the card picks a sensible number for the grid. Five rings
+# result in a 4/1 wrap, which reads well in a wide card.
+type: custom:garmin-card
+title: Today
+show_units: true
+entities:
+  - entity: sensor.garmin_connect_steps
+    max_entity: sensor.garmin_connect_daily_step_goal
+    color: deepskyblue
+  - entity: sensor.garmin_connect_distance
+    max: 10000
+    color: '#00b294'
+  - entity: sensor.garmin_connect_calories
+    max: 2500
+    color: '#ff7043'
+  - entity: sensor.garmin_connect_intensity_minutes
+    max_attribute: goal
+    color: '#43a047'
+  - entity: sensor.garmin_connect_floors_ascended
+    max_entity: sensor.garmin_connect_floors_ascended_goal
+    color: '#8d6e63'
